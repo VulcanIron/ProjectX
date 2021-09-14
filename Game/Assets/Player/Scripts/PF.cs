@@ -11,6 +11,8 @@ public class PF : MonoBehaviour
     public Transform groundCheck;
     bool isGrounded;
     Animator anim;
+    public bool facingRight = true;
+    private Vector3 pos;
 
     void Start()
     {
@@ -18,7 +20,7 @@ public class PF : MonoBehaviour
     }
     void Update()
     {
-        Flip();
+        LookAtCursor();
         CheckGround();
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
@@ -31,6 +33,11 @@ public class PF : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         if (Input.GetAxis("Horizontal") < 0)
             transform.localRotation = Quaternion.Euler(0, 180, 0);
+    }
+    void LookAtCursor()
+    {
+        if (Input.mousePosition.x < pos.x && facingRight) Flip();
+        else if (Input.mousePosition.x > pos.x && !facingRight) Flip();
     }
     void CheckGround()
     {
